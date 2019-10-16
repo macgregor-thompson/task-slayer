@@ -2,12 +2,104 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>TaskSlayer</title>
+  <title>Task Slayer</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style type="text/css">
+    @media (max-width: 599px) {
+      .ts-logo, .progress {
+        max-width: 60%;
+      }
+    }
+    @-webkit-keyframes progress-bar-stripes {
+      from {
+        background-position: 1rem 0;
+      }
+      to {
+        background-position: 0 0;
+      }
+    }
+
+    @keyframes progress-bar-stripes {
+      from {
+        background-position: 1rem 0;
+      }
+      to {
+        background-position: 0 0;
+      }
+    }
+    .app-loading-wrapper {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .app-loading {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      max-width: 500px;
+    }
+
+    .ts-logo {
+      width: 500px;
+    }
+
+    .ts-logo img {
+      width: 100%;
+    }
+
+    .progress-bar-animated {
+      -webkit-animation: progress-bar-stripes .5s linear infinite;
+      animation: progress-bar-stripes .25s linear infinite;
+    }
+    .progress-bar-striped {
+      background-image: linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+      background-size: 1rem 1rem;
+    }
+    .progress-bar {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      -ms-flex-pack: center;
+      justify-content: center;
+      color: #fff;
+      text-align: center;
+      white-space: nowrap;
+      background-color: #306da4;
+      transition: width .6s ease;
+    }
+
+    .progress {
+      display: -ms-flexbox;
+      display: flex;
+      height: 1rem;
+      overflow: hidden;
+      font-size: .75rem;
+      background-color: #e9ecef;
+      border-radius: .25rem;
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
-  <ts-root></ts-root>
+  <ts-root>
+    <div class="app-loading-wrapper">
+      <div class="app-loading">
+        <div class="ts-logo">
+        </div>
+        <div class="progress" style="height: 20px;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+        </div>
+      </div>
+    </div>
+  </ts-root>
 </body>
 </html>

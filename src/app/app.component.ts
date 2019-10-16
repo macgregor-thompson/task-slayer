@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { NavigationStart, Router } from '@angular/router';
+
+import { SpinnerService } from './core/services/spinner.service';
 
 @Component({
   selector: 'ts-root',
@@ -7,4 +10,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'task-slayer';
+
+  constructor(public router: Router,
+              public spinnerService: SpinnerService) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) this.spinnerService.start();
+    });
+  }
+
 }

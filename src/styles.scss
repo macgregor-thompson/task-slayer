@@ -1,1 +1,51 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/theming';
+@include mat-core();
+@import './colors';
+@import './utils';
+
+$ts-theme: mat-light-theme($ts-accent, $ts-accent);
+@include angular-material-theme($ts-theme);
+
+
+html, body {
+  height: 100%;
+  width: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.main-content {
+  padding-top: 64px;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  padding: 5px 15px;
+  justify-content: center;
+}
+
+/* this allows the box shadow to work */
+.mat-toolbar {
+  background: inherit;
+}
+
+.mat-progress-spinner {
+  top: calc(50% - 50px);
+  left: calc(50% - 50px);
+  z-index: 9999;
+  position: absolute !important;
+}
+
+.main-spinner {
+  position: fixed !important;
+}
+
+.fill-remaining-space {
+  flex: 1 1 auto;
+}

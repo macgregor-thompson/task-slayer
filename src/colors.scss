@@ -1,0 +1,80 @@
+$ts-red: #D42626;
+$ts-blue: #306da4;
+
+$white: #fff;
+$black: #000;
+$red: #f44336;
+$orange: #ff8d3a;
+$yellow: #fdd835;
+$greed: #43a047;
+$blue: #1E6ACA;
+$background: #EBECF0;
+
+$dark-primary-text: rgba(black, 0.87);
+$light-primary-text: rgba(white, 0.87);
+
+$ts-accent: mat-palette((
+  50 : #e2eaf2,
+  100 : #b6cbdf,
+  200 : #85a9ca,
+  300 : #5487b4,
+  400 : #306da4,
+  500 : #0b5394,
+  600 : #0a4c8c,
+  700 : #084281,
+  800 : #063977,
+  900 : #032965,
+  A100 : #95b6ff,
+  A200 : #6294ff,
+  A400 : #2f71ff,
+  A700 : #155fff,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #ffffff,
+    400 : #ffffff,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #ffffff,
+    A700 : #ffffff,
+  )
+), 400, 200, 600);
+
+$ts-primary: mat-palette((
+  50 : #f9e0e0,
+  100 : #f0b3b3,
+  200 : #e68080,
+  300 : #db4d4d,
+  400 : #d42626,
+  500 : #cc0000,
+  600 : #c70000,
+  700 : #c00000,
+  800 : #b90000,
+  900 : #ad0000,
+  A100 : #ffd7d7,
+  A200 : #ffa4a4,
+  A400 : #ff7171,
+  A700 : #ff5858,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #ffffff,
+    400 : #ffffff,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+), 400, 200, 600);
