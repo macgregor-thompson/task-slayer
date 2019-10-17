@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Observable, Subject } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { forkJoin, MonoTypeOperatorFunction, Observable, Subject } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 
 import { ErrorService } from './error.service';
 import { Todo } from '../../shared/models/todo';
@@ -14,8 +14,7 @@ import { SpinnerService } from './spinner.service';
 export class TodoService {
   private todoApi = 'https://fes-todo-api.herokuapp.com/api/todo';
 
-  newToDo$ = new Subject<Todo[]>();
-  createdTodo = new Subject<Todo>();
+  newToDo$ = new Subject<Todo>();
 
   constructor(private http: HttpClient,
               private spinnerService: SpinnerService,
@@ -24,12 +23,59 @@ export class TodoService {
   getTodos(): Observable<Todo[]> {
     this.spinnerService.start();
     return this.http.get<Todo[]>(this.todoApi)
-
       .pipe(
-        tap(() => {
-          this.spinnerService.stop();
-        }),
-        //catchError(ErrorService.handle));
+        map(todos => todos || []),
+        this.stopSpinner(),
         catchError(e => this.errorService.oops(e)));
   }
+
+  createTodo(todo: Partial<Todo>): Observable<Todo> {
+    this.spinnerService.start();
+    return this.http.post<Todo>(this.todoApi, todo)
+      .pipe(
+        tap(t => {
+          this.newToDo$.next(t);
+          this.spinnerService.stop();
+        }),
+        catchError(e => this.errorService.oops(e)));
+  }
+
+  getTodoById(id: string): Observable<Todo> {
+    this.spinnerService.start();
+    return this.http.get<Todo>(`${this.todoApi}/${id}`)
+      .pipe(this.stopSpinner(), catchError(e => this.errorService.oops(e)));
+  }
+
+  delete(id: string): Observable<void> {
+    this.spinnerService.start();
+    // @ts-ignore
+    return this.http.delete<void>(`${this.todoApi}/${id}`, { responseType: 'text' })
+      .pipe(this.stopSpinner(), catchError(e => this.errorService.oops(e)));
+  }
+
+  update(todo: Partial<Todo>): Observable<Todo> {
+    this.spinnerService.start();
+    const { description, complete } = todo;
+    return this.http.put<Todo>(`${this.todoApi}/${todo.id}`, { description, complete })
+      .pipe(this.stopSpinner(), catchError(e => this.errorService.oops(e)));
+  }
+
+  // there's no update all method on the server so this will have to do...
+  updateAll(todos: Todo[]): Observable<Todo[]> {
+    this.spinnerService.start();
+    const observables: Observable<Todo>[] = [];
+    todos.forEach(todo => {
+      observables.push(this.update(todo));
+    });
+    return forkJoin(observables);
+  }
+
+  stopSpinner<T>(): MonoTypeOperatorFunction<T> {
+    return input$ => input$.pipe(
+      tap(() => {
+        this.spinnerService.stop();
+      }));
+  }
+
+
 }

@@ -1,0 +1,81 @@
+.container {
+  flex-wrap: wrap;
+}
+
+.ts-card {
+  flex: 1 1 1100px;
+  flex-wrap: wrap;
+  /* used to make the ellipsis stuff work */
+  min-width: 0;
+  /* Used to make the flexbox items grow to their own height instead of their parent's
+   ***Needs to be 0% not just 0***  */
+  height: 0%;
+  padding: 0 !important;
+  max-width: 1000px;
+}
+
+.rotate {
+  transition: .2s;
+}
+
+.rotate-left-45 {
+  transform: rotate(45deg);
+}
+
+.rotate-right-45 {
+  transform: rotate(-45deg);
+}
+
+.rotate-90 {
+  transform: rotateZ(-180deg);
+}
+
+.header-btns {
+  height: 32px !important;
+
+  h5 {
+    cursor: pointer;
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.54);
+    font-weight: 700;
+    line-height: 24px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    &:hover {
+      color: #306DA4;
+    }
+  }
+
+  .select-all-btn {
+    color: rgba(0, 0, 0, 0.54);
+    transform: scale(1.1);
+    margin-left: 8px;
+  }
+
+  .title-btn {
+    margin-left: 5px;
+  }
+
+  .created-on-btn {
+    width: 70px;
+    margin-right: 26px;
+  }
+}
+
+.title-search {
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  mat-form-field {
+    width: 300px;
+  }
+}
+
+mat-card-title {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+

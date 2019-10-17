@@ -1,0 +1,117 @@
+.ts-list {
+  min-height: 60px;
+  display: block;
+  border-radius: 4px;
+  overflow: hidden;
+
+  .mat-list-item {
+    padding: 0 10px 0 5px !important;
+  }
+}
+
+.list-item {
+  border-bottom: solid 1px #ccc;
+  color: rgba(0, 0, 0, 0.87);
+  box-sizing: border-box;
+  cursor: text;
+  background: white;
+  font-size: 14px;
+  align-items: center;
+
+  &:last-child {
+    border: none;
+  }
+
+  button {
+    color: rgba(0, 0, 0, 0.54);
+  }
+
+  &:hover {
+    background-color: #dedede;
+    & .delete-btn {
+      visibility: visible;
+    }
+  }
+
+  &:hover .drag-handle {
+    visibility: inherit;
+  }
+
+  &.editing::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background-color: #306DA4;
+  }
+
+  .mat-list-item-content {
+    padding: 0 !important;
+    font-size: 14px;
+  }
+
+  .list-title {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0 10px;
+  }
+
+  .list-date {
+    width: 60px;
+  }
+
+  .drag-handle {
+    visibility: hidden;
+    color: #ccc;
+    cursor: move;
+  }
+
+  .delete-btn {
+    visibility: hidden;
+  }
+
+}
+
+/*  Drag and Drop Stuff */
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+  0 8px 10px 1px rgba(0, 0, 0, 0.14),
+  0 3px 14px 2px rgba(0, 0, 0, 0.12);
+
+  mat-card {
+    background-color: #e2eaf2;
+  }
+
+  & > div {
+    height: 50px;
+    display: flex;
+    align-items: center;
+  }
+
+  .drag-handle {
+    visibility: inherit;
+  }
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.ts-list.cdk-drop-list-dragging .list-item:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+mat-card-footer {
+  margin: 0 !important;
+}

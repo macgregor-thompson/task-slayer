@@ -1,1 +1,114 @@
-<pre>{{ todos | json }}</pre>
+<div class="container">
+ <!-- <mat-card class="ts-card" tsStopPropagation>
+
+    <div class="fill-remaining-space"></div>
+    <button mat-icon-button (click)="getTodos()"
+            [matTooltip]="'Refresh '  + (sessionService.pageTitle$ | async)"  matTooltipClass="ts-tooltip"
+            aria-label="Refresh" [disabled]="spinnerService.primary">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </mat-card>-->
+  <mat-card class="ts-card" >
+    <div class="title-search">
+      <mat-card-title>My Todos</mat-card-title>
+      <div class="fill-remaining-space"></div>
+      <mat-form-field class="" floatLabel="never">
+        <input #searchInput matInput [placeholder]="'Search ' + (sessionService.pageTitle$ | async)"
+               autocomplete="off" name="searchInput">
+        <button mat-button *ngIf="searchInput.value" matSuffix mat-icon-button aria-label="Clear"
+                (click)="searchInput.value = ''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+    <mat-toolbar class="header-btns">
+       <button mat-icon-button class="select-all-btn" (click)="toggleAllCompleted()"
+               matTooltip="Mark all {{allCompleted ? 'Incomplete' : 'Complete'}}"
+               matTooltipClass="ts-tooltip" matTooltipPosition="above">
+         <mat-icon *ngIf="!allCompleted">check_box_outline_blank</mat-icon>
+         <mat-icon *ngIf="allCompleted" color="accent">check_box</mat-icon>
+       </button>
+      <h5 class="title-btn" (click)="sortByTitle()">
+        Title
+        <mat-icon *ngIf="sorter['description']" class="rotate"
+                  [ngClass]="{'rotate-90': sorter['description'] === Sorted.descending}">arrow_downward
+        </mat-icon>
+      </h5>
+      <div class="fill-remaining-space"></div>
+      <h5 class="created-on-btn" (click)="sortByCreatedDate()">
+        Created
+        <mat-icon *ngIf="sorter['createdAt']" class="rotate"
+                  [ngClass]="{'rotate-90': sorter['createdAt'] === Sorted.descending}">arrow_downward
+        </mat-icon>
+      </h5>
+
+    </mat-toolbar>
+    <mat-list class="ts-list" cdkDropList (cdkDropListDropped)="dropTodo($event)" tsStopPropagation>
+      <mat-list-item class="list-item" cdkDrag matRipple
+                     *ngFor="let todo of todos | searchFilter: searchInput.value; let i = index"
+                     (dblclick)="editDescription(todo)"
+                     (click)="updateIfEditing(todo)"
+                     (contextmenu)="openContextMenu($event, todo, i)">
+        <div class="drag-handle" cdkDragHandle fxHide.lt-sm>
+          <mat-icon>drag_indicator</mat-icon>
+        </div>
+        <mat-checkbox [checked]="todo.complete" (change)="toggleCompleted($event, todo)"
+                      tsStopPropagation></mat-checkbox>
+        <div class="list-title">
+          <span *ngIf="editingTodo?.id !== todo.id">{{ todo.description }}</span>
+          <mat-form-field *ngIf="editingTodo?.id === todo.id">
+            <input matInput [(ngModel)]="todo.description" (ngModelChange)="todoChanged = true">
+          </mat-form-field>
+        </div>
+
+        <div class="list-date" [matTooltip]="todo.createdAt | date : 'mediumDate'"
+             matTooltipPosition="before" matTooltipClass="ninety-tooltip">
+          {{ todo.createdAt | date : 'MMM d' }}
+        </div>
+        <button class="delete-btn" mat-icon-button (click)="delete(todo, i)"  aria-label="Delete Todo"
+                matTooltip="Delete Todo" matTooltipPosition="above" matTooltipClass="ts-tooltip">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-list>
+    <!--<mat-card-footer *ngIf="todos?.length">
+      <mat-divider></mat-divider>
+      <mat-paginator [length]="todos.length"
+                     [pageSize]="pageSize"
+                     [pageSizeOptions]="pageSizeOptions"
+                     [showFirstLastButtons]="true"
+                     (page)="onPageEvent($event)">
+      </mat-paginator>
+    </mat-card-footer>-->
+  </mat-card>
+</div>
+
+<div style="visibility: hidden; position: fixed"
+     [style.left]="contextMenuPosition.x"
+     [style.top]="contextMenuPosition.y"
+     [matMenuTriggerFor]="contextMenu">
+</div>
+
+<mat-menu #contextMenu="matMenu">
+  <ng-template matMenuContent let-todo="todo" let-index="index">
+    <button mat-menu-item class="hidden"></button>
+    <button mat-menu-item (click)="moveTodo(index, 0)">
+      <mat-icon>arrow_upward</mat-icon>
+      <span>Top of List</span>
+    </button>
+    <button mat-menu-item (click)="moveTodo(index, todos.length - 1)">
+      <mat-icon>arrow_downward</mat-icon>
+      <span>Bottom of List</span>
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item
+            (click)="cloneTodo(todo)">
+      <mat-icon>file_copy</mat-icon>
+      <span>Clone</span>
+    </button>
+    <button mat-menu-item (click)="delete(todo, index)" class="red">
+      <mat-icon>delete</mat-icon>
+      <span>Delete</span>
+    </button>
+  </ng-template>
+</mat-menu>

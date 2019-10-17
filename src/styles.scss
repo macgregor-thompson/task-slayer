@@ -1,12 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~@angular/material/theming';
 @include mat-core();
+@import "lists";
 @import './colors';
 @import './utils';
 
 $ts-theme: mat-light-theme($ts-accent, $ts-accent);
 @include angular-material-theme($ts-theme);
-
 
 html, body {
   height: 100%;
@@ -26,7 +26,7 @@ body {
 .container {
   display: flex;
   flex-direction: row;
-  padding: 5px 15px;
+  padding: 8px;
   justify-content: center;
 }
 
@@ -49,3 +49,23 @@ body {
 .fill-remaining-space {
   flex: 1 1 auto;
 }
+
+
+mat-checkbox {
+  margin: 0 5px;
+
+  .mat-checkbox-inner-container {
+    height: 20px;
+    width: 20px;
+  }
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.ts-tooltip {
+  font-size: 14px;
+}
+
+

@@ -1,1 +1,20 @@
-<p>login works!</p>
+<div class="container">
+  <h1>Task Slayer</h1>
+  <mat-card class="login-card">
+    <mat-card-content>
+      <mat-form-field hintLabel="Login or create a new username" class="password-field">
+        <input matInput [(ngModel)]="username" placeholder="Username" required type="text" name="user"
+               (keydown.enter)="login()">
+      </mat-form-field>
+      <ts-alert *ngIf="errorLoggingIn" alertClass="alert-danger">
+        The username you entered does not exist. Please try again or create a new one.
+      </ts-alert>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="accent" (click)="login()" [disabled]="!username?.length">LOGIN</button>
+      <button mat-raised-button color="primary" class="signup-btn" (click)="authService.signUp(username)"
+              [disabled]="!username?.length">SIGN UP
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

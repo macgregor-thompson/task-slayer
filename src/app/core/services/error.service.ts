@@ -23,15 +23,16 @@ export class ErrorService {
   }
 
   oops(e) {
+    console.error('before error:', e);
     // like above, but will stop the spinner
     this.spinnerService.stop();
     let errorMessage: string;
     if (e.error instanceof ErrorEvent) {
       errorMessage = `An error occurred: ${e.error.message}`;
     } else {
-      errorMessage = `Backend returned code ${e.code}: ${e.message}`;
+      errorMessage = `Backend returned code ${e.code || ''}: ${e.message}`;
     }
-    console.error(e);
+    console.error('after error:', e);
     return throwError(errorMessage);
   }
 

@@ -1,0 +1,27 @@
+
+.container {
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  background: #306da4;
+  color: #fff;
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+.login-card {
+  @media (min-width: 599px) {
+    width: 550px
+  }
+}
+
+.mat-card-actions {
+  display: flex !important;
+  justify-content: flex-end;
+}
+
+.signup-btn {
+  background-color: #43a047;
+}
