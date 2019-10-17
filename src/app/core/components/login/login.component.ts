@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    if (!this.username.length) return;
     this.authService.login(this.username)
       .subscribe(() => this.errorLoggingIn = false, () => this.errorLoggingIn = true);
   }

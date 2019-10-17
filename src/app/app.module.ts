@@ -16,6 +16,8 @@ export function initializeUser(appLoadService: AppLoadService) {
   return () => appLoadService.initializeUser();
 }
 
+(window as any).global = window;
+
 @NgModule({
   declarations: [
     AppComponent
