@@ -68,9 +68,9 @@ export class TodosComponent implements OnInit, OnDestroy {
     });
   }
 
-  createTodo() {
-    if (!this.newDescription.length) return;
-    const newTodo = new Todo(this.newDescription);
+  createTodo(description = this.newDescription) {
+    if (!description.length) return;
+    const newTodo = new Todo(description);
     this.todoService.createTodo(newTodo).subscribe(todo => {
       this.newDescription = '';
       this.todos.push(todo);
@@ -133,11 +133,6 @@ export class TodosComponent implements OnInit, OnDestroy {
     this.numberCompleted = this.todos && this.todos.filter(t => !!t.complete).length;
     this.allCompleted = this.todos && this.todos.length === this.numberCompleted;
   }
-
-  cloneTodo(todo): void {
-
-  }
-
 
   // Sorting and other stuff
 
@@ -204,7 +199,6 @@ export class TodosComponent implements OnInit, OnDestroy {
   }
 
   openContextMenu(event: MouseEvent, todo: Todo, index: number): void {
-    console.log('context click');
     if (!event.ctrlKey && !event.shiftKey) {
       event.preventDefault();
       this.contextMenuPosition.x = event.clientX + 'px';
@@ -220,7 +214,6 @@ export class TodosComponent implements OnInit, OnDestroy {
   }
 
   onPageEvent($event: PageEvent) {
-    console.log($event);
     this.pageIndex = $event.pageIndex;
     this.pageSize = $event.pageSize;
   }
