@@ -45,9 +45,9 @@ export class AppLoadService {
         } catch (e) {
           console.error(e);
           localStorage.removeItem('user');
-         // document.location.pathname = '/login';
+          document.location.pathname = '/login';
         }
-      }// else document.location.pathname = '/login';
+      } else document.location.pathname = '/login';
     } else return Promise.resolve();
   }
 
