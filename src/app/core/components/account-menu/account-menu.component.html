@@ -1,5 +1,4 @@
 <div class="flex">
-  <h4 class="username">{{ authService.user?.username }}</h4>
   <button mat-icon-button color="primary" [matMenuTriggerFor]="accountMenu" class="menu-btn">
     <mat-icon>person</mat-icon>
   </button>
@@ -7,6 +6,8 @@
 
 
 <mat-menu #accountMenu="matMenu">
+  <div class="username-div" tsStopPropagation>{{ authService.user?.username }}</div>
+  <mat-divider></mat-divider>
   <button mat-menu-item (click)="authService.logout()" class="logout-btn">
     <mat-icon>exit_to_app</mat-icon>
     <span>Logout</span>

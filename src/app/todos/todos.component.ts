@@ -13,6 +13,7 @@ import { SortingTracker } from '../shared/models/sorting-tracker';
 import { SortingService } from '../core/services/sorting.service';
 import { SpinnerService } from '../core/services/spinner.service';
 import { PageEvent } from '@angular/material/paginator';
+import { FilterBy } from '../shared/models/filter-by.enum';
 
 @Component({
   selector: 'ts-todos',
@@ -33,6 +34,13 @@ export class TodosComponent implements OnInit, OnDestroy {
   Sorted = Sorted;
   contextMenuPosition = { x: '0px', y: '0px' };
   allCompleted = false;
+  newDescription = '';
+  activeFilter: FilterBy = FilterBy.all;
+  FilterBy = FilterBy;
+  numberRemaining: number;
+  numberCompleted: number;
+
+  // might add in pagination later...but again since I can't control the server side code, I might now
   pageIndex = 0;
   pageSize = 10;
   numberOfTodos: number;
@@ -45,7 +53,8 @@ export class TodosComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getTodos();
-    fromEvent(document, 'click').subscribe(() => this.update(this.editingTodo));
+    fromEvent(document, 'click').subscribe(() => this.update());
+    this.subscriptions.add(this.sessionService.refresh$.subscribe(() => this.getTodos()));
   }
 
   ngOnDestroy(): void {
@@ -59,19 +68,29 @@ export class TodosComponent implements OnInit, OnDestroy {
     });
   }
 
+  createTodo() {
+    if (!this.newDescription.length) return;
+    const newTodo = new Todo(this.newDescription);
+    this.todoService.createTodo(newTodo).subscribe(todo => {
+      this.newDescription = '';
+      this.todos.push(todo);
+      this.copyAndSort();
+    });
+  }
+
   editDescription(todo: Todo): void {
     if (this.editingTodo && this.editingTodo.id !== todo.id) this.todoService.update(todo).subscribe();
     this.editingTodo = todo;
   }
 
-  update(todo: Todo) {
-    if (!todo) return;
+  update(todo = this.editingTodo): void {
+    if (!todo || !this.todoChanged) return this.editingTodo = null;
     this.todoService.update(todo).subscribe();
     this.editingTodo = null;
     this.todoChanged = false;
   }
 
-  updateIfEditing(todo: Todo) {
+  updateIfEditing(todo: Todo): void {
     if (!this.editingTodo || this.editingTodo.id === todo.id) return;
     this.update(todo);
   }
@@ -81,6 +100,8 @@ export class TodosComponent implements OnInit, OnDestroy {
       this.todos.splice(i, 1);
       const index = this.todosCopy.findIndex(t => t.id === todo.id);
       this.todosCopy.splice(index, 1);
+      this.setNumberCompletedAndIncomplete();
+      if (this.editingTodo && this.editingTodo.id === todo.id) this.editingTodo = null;
     });
   }
 
@@ -88,18 +109,37 @@ export class TodosComponent implements OnInit, OnDestroy {
     todo.complete = $event.checked;
     todo.updatedAt = new Date();
     this.todoChanged = true;
+    this.setNumberCompletedAndIncomplete();
     this.todoService.update(todo).subscribe();
   }
 
   toggleAllCompleted(): void {
     this.allCompleted = !this.allCompleted;
     this.todos.forEach(t => t.complete = this.allCompleted);
+    this.setNumberCompletedAndIncomplete();
     this.todoService.updateAll(this.todos).subscribe(); // fire and forget for now...
   }
 
-  cloneTodo(todo) {
+  deleteCompleted(): void {
+    const completedIds = this.todos.filter(t => t.complete).map(t => t.id);
+    this.todoService.deleteMany(completedIds).subscribe(() => this.getTodos());
+  }
+
+
+  setNumberCompletedAndIncomplete(): void {
+    // it would be easier to put this in the view, but having functions in the view isn't the best practice as they are called
+    // every change detection cycle
+    this.numberRemaining = this.todos && this.todos.filter(t => !t.complete).length;
+    this.numberCompleted = this.todos && this.todos.filter(t => !!t.complete).length;
+    this.allCompleted = this.todos && this.todos.length === this.numberCompleted;
+  }
+
+  cloneTodo(todo): void {
 
   }
+
+
+  // Sorting and other stuff
 
   dropTodo(event: CdkDragDrop<string[]>): void {
     moveItemInArray(this.todos, event.previousIndex, event.currentIndex);
@@ -135,12 +175,13 @@ export class TodosComponent implements OnInit, OnDestroy {
 
   setSortProperties(property?: string): void {
     this.sortProperties.filter(prop => prop !== property).forEach(p => this.sorter[p] = Sorted.false);
-    //this.todoservice.updateOrdinals(this.todos);
+    // this is where I would update the order of the list if I could
     if (!property) this.todosCopy = [...this.todos];
   }
 
   copyAndSort(): void {
     this.todosCopy = [...this.todos];
+    this.setNumberCompletedAndIncomplete();
     const currentSort = SortingService.getCurrentSortProperty(this.sorter);
     if (currentSort) {
       this.sortBy(currentSort as keyof Todo, this.sorter[currentSort] as Sorted.ascending | Sorted.descending);

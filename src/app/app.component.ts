@@ -9,7 +9,6 @@ import { SpinnerService } from './core/services/spinner.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'task-slayer';
 
   constructor(public router: Router,
               public spinnerService: SpinnerService) {

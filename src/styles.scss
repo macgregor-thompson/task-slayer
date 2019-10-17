@@ -1,11 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~@angular/material/theming';
 @include mat-core();
-@import "lists";
-@import './colors';
-@import './utils';
 
-$ts-theme: mat-light-theme($ts-accent, $ts-accent);
+@import './colors';
+@import './mixins';
+@import './utils';
+@import './media-queries';
+
+@import './lists';
+
+$ts-primary: mat-palette($blue-palette, 400, 200, 600);
+$ts-accent: mat-palette($red-palette, 400, 200, 600);
+
+$ts-theme: mat-light-theme($ts-primary, $ts-accent);
 @include angular-material-theme($ts-theme);
 
 html, body {
@@ -60,12 +67,20 @@ mat-checkbox {
   }
 }
 
-mat-form-field {
-  width: 100%;
-}
-
 .ts-tooltip {
   font-size: 14px;
 }
 
+.mat-button-toggle-group {
+  box-shadow: none;
+}
 
+.search-input {
+  .mat-form-field-flex {
+    width: 200px;
+  }
+}
+
+.login-card .alert {
+  margin-top: 15px;
+}

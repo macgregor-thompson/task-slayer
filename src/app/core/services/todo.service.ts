@@ -46,11 +46,20 @@ export class TodoService {
       .pipe(this.stopSpinner(), catchError(e => this.errorService.oops(e)));
   }
 
-  delete(id: string): Observable<void> {
+  delete(id: string): Observable<string> {
     this.spinnerService.start();
     // @ts-ignore
-    return this.http.delete<void>(`${this.todoApi}/${id}`, { responseType: 'text' })
+    return this.http.delete<string>(`${this.todoApi}/${id}`, { responseType: 'text' })
       .pipe(this.stopSpinner(), catchError(e => this.errorService.oops(e)));
+  }
+
+  deleteMany(ids: string[]): Observable<string[]> {
+    this.spinnerService.start();
+    const observables: Observable<string>[] = [];
+    ids.forEach(id => {
+      observables.push(this.delete(id));
+    });
+    return forkJoin(observables);
   }
 
   update(todo: Partial<Todo>): Observable<Todo> {

@@ -11,6 +11,14 @@ mat-toolbar {
   padding-left: 16px;
 }
 
-button {
+.refresh-btn {
   margin-right: 15px;
+}
+
+.search-input {
+  margin-right: 1em;
+  font-size: 16px;
+  .mat-form-field-flex {
+    width: 200px;
+  }
 }

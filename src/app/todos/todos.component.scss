@@ -1,5 +1,10 @@
+@import '../../colors';
+@import '../../mixins';
+@import '../../media-queries';
+
 .container {
   flex-wrap: wrap;
+  padding-bottom: 50px;
 }
 
 .ts-card {
@@ -12,26 +17,25 @@
   height: 0%;
   padding: 0 !important;
   max-width: 1000px;
+  margin-top: 15px;
+
 }
 
 .rotate {
   transition: .2s;
-}
-
-.rotate-left-45 {
-  transform: rotate(45deg);
-}
-
-.rotate-right-45 {
-  transform: rotate(-45deg);
+  transform: scale(.75);
 }
 
 .rotate-90 {
-  transform: rotateZ(-180deg);
+  transform: scale(.75) rotateZ(-180deg);
 }
 
 .header-btns {
   height: 32px !important;
+  @include lt-sm() {
+    padding-left: 0;
+  }
+
 
   h5 {
     cursor: pointer;
@@ -42,6 +46,7 @@
     padding: 0;
     display: flex;
     align-items: center;
+
     &:hover {
       color: #306DA4;
     }
@@ -51,6 +56,9 @@
     color: rgba(0, 0, 0, 0.54);
     transform: scale(1.1);
     margin-left: 8px;
+    @include lt-sm() {
+      margin-left: 0;
+    }
   }
 
   .title-btn {
@@ -63,13 +71,13 @@
   }
 }
 
-.title-search {
-  padding: 0 16px;
+.input-div {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  padding: 0 16px;
+  margin-bottom: -10px; // not a huge fan of this...but it looks better
+
   mat-form-field {
-    width: 300px;
+    width: 100%;
   }
 }
 
@@ -79,3 +87,28 @@ mat-card-title {
 }
 
 
+.filters {
+  flex-wrap: wrap;
+  @include flex-align-center();
+  padding: 0 16px;
+  @include lt-sm() {
+    mat-form-field {
+      margin-top: 15px;
+      width: 100%;
+    }
+  }
+}
+
+.remaining-todos {
+  @include flex-align-center();
+}
+
+.flex-align-right {
+  justify-content: flex-end;
+}
+
+.header {
+  padding-top: 5px;
+  margin-bottom: 5px;
+  background-color: $background;
+}

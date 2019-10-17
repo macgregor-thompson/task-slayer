@@ -26,15 +26,13 @@
     color: rgba(0, 0, 0, 0.54);
   }
 
-  &:hover {
+  &.editing, &:hover {
     background-color: #dedede;
-    & .delete-btn {
-      visibility: visible;
-    }
   }
-
-  &:hover .drag-handle {
-    visibility: inherit;
+  &:hover {
+    .drag-handle, .delete-btn {
+      visibility: inherit;
+    }
   }
 
   &.editing::after {
@@ -59,6 +57,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 0 10px;
+
+    mat-form-field {
+      width: 100%;
+    }
   }
 
   .list-date {

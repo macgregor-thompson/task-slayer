@@ -18,18 +18,19 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatRippleModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [],
   imports: [
     MatProgressSpinnerModule, MatToolbarModule, MatIconModule, MatListModule, MatTabsModule, MatMenuModule, MatButtonModule,
     MatDialogModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatChipsModule, MatTooltipModule,
-    DragDropModule, MatRippleModule, MatCheckboxModule, MatPaginatorModule
+    DragDropModule, MatRippleModule, MatCheckboxModule, MatPaginatorModule, MatButtonToggleModule
   ],
   exports: [
     MatProgressSpinnerModule, MatToolbarModule, MatIconModule, MatListModule, MatTabsModule, MatMenuModule, MatButtonModule,
     MatDialogModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatChipsModule, MatTooltipModule,
-    DragDropModule, MatRippleModule, MatCheckboxModule, MatPaginatorModule
+    DragDropModule, MatRippleModule, MatCheckboxModule, MatPaginatorModule, MatButtonToggleModule
   ]
 })
 export class AngularMaterialModule {}

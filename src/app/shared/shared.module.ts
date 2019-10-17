@@ -8,12 +8,14 @@ import { AngularMaterialModule } from '../angular-material/angular-material.modu
 import { AlertComponent } from './components/alert/alert.component';
 import { SearchFilterPipe } from './pipes/search-filter.pipe';
 import { StopPropagationDirective } from './directives/stop-propagation.directive';
+import { FilterByStatusPipe } from './pipes/filter-by-status.pipe';
 
 @NgModule({
   declarations: [
     AlertComponent,
     SearchFilterPipe,
-    StopPropagationDirective
+    StopPropagationDirective,
+    FilterByStatusPipe
   ],
   imports: [
     CommonModule,
@@ -31,6 +33,7 @@ import { StopPropagationDirective } from './directives/stop-propagation.directiv
     AngularMaterialModule,
     AlertComponent,
     SearchFilterPipe,
+    FilterByStatusPipe,
     StopPropagationDirective
   ]
 })

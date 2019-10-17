@@ -1,33 +1,66 @@
 <div class="container">
- <!-- <mat-card class="ts-card" tsStopPropagation>
+  <mat-card class="ts-card">
+    <div class="header">
+      <div class="input-div" fxHide.gt-xs>
+        <mat-form-field>
+          <mat-label>{{ 'Search ' + (sessionService.pageTitle$ | async) }}</mat-label>
+          <input matInput name="searchInput" [(ngModel)]="sessionService.searchInput">
+          <button *ngIf="sessionService.searchInput.length" color="primary" matSuffix mat-icon-button aria-label="Clear"
+                  (click)="sessionService.searchInput = ''" matTooltip="Clear" matTooltipPosition="before"
+                  matTooltipClass="ts-tooltip">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
 
-    <div class="fill-remaining-space"></div>
-    <button mat-icon-button (click)="getTodos()"
-            [matTooltip]="'Refresh '  + (sessionService.pageTitle$ | async)"  matTooltipClass="ts-tooltip"
-            aria-label="Refresh" [disabled]="spinnerService.primary">
-      <mat-icon>refresh</mat-icon>
-    </button>
-  </mat-card>-->
-  <mat-card class="ts-card" >
-    <div class="title-search">
-      <mat-card-title>My Todos</mat-card-title>
-      <div class="fill-remaining-space"></div>
-      <mat-form-field class="" floatLabel="never">
-        <input #searchInput matInput [placeholder]="'Search ' + (sessionService.pageTitle$ | async)"
-               autocomplete="off" name="searchInput">
-        <button mat-button *ngIf="searchInput.value" matSuffix mat-icon-button aria-label="Clear"
-                (click)="searchInput.value = ''">
-          <mat-icon>close</mat-icon>
+      <div class="filters">
+        <div class="remaining-todos">
+          <mat-chip-list class="small-chips">
+            <mat-chip color="accent" selected="true">
+              Remaining:&nbsp;&nbsp;{{numberRemaining}}
+            </mat-chip>
+            <mat-chip color="primary" selected="true" *ngIf="numberCompleted">
+              Completed:&nbsp;&nbsp;{{numberCompleted}}
+            </mat-chip>
+          </mat-chip-list>
+          <button *ngIf="numberCompleted" mat-button (click)="deleteCompleted()" color="primary"
+                  matTooltip="Clear Completed" matTooltipClass="ts-tooltip"
+                  aria-label="Clear Completed">
+            <mat-icon>clear_all</mat-icon>
+            Clear Completed
+          </button>
+        </div>
+        <div class="fill-remaining-space"></div>
+
+        <mat-form-field>
+          <mat-label>Showing</mat-label>
+          <mat-select [(ngModel)]="activeFilter">
+            <mat-option [value]="FilterBy.all">All</mat-option>
+            <mat-option [value]="FilterBy.incomplete">Active</mat-option>
+            <mat-option [value]="FilterBy.complete">Completed</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+    </div>
+    <div class="input-div">
+      <mat-form-field appearance="outline">
+        <mat-label>Add Todo</mat-label>
+        <input matInput name="newTodo" [(ngModel)]="newDescription" (keyup.enter)="createTodo()">
+        <button matSuffix mat-icon-button (click)="createTodo()" color="primary" [disabled]="!newDescription?.length"
+                matTooltip="Add Todo" matTooltipPosition="before" matTooltipClass="ts-tooltip">
+          <mat-icon>check</mat-icon>
         </button>
       </mat-form-field>
     </div>
+
     <mat-toolbar class="header-btns">
-       <button mat-icon-button class="select-all-btn" (click)="toggleAllCompleted()"
-               matTooltip="Mark all {{allCompleted ? 'Incomplete' : 'Complete'}}"
-               matTooltipClass="ts-tooltip" matTooltipPosition="above">
-         <mat-icon *ngIf="!allCompleted">check_box_outline_blank</mat-icon>
-         <mat-icon *ngIf="allCompleted" color="accent">check_box</mat-icon>
-       </button>
+      <button mat-icon-button class="select-all-btn" (click)="toggleAllCompleted()"
+              matTooltip="Mark all {{allCompleted ? 'Incomplete' : 'Complete'}}"
+              matTooltipClass="ts-tooltip" matTooltipPosition="above">
+        <mat-icon *ngIf="!allCompleted">check_box_outline_blank</mat-icon>
+        <mat-icon *ngIf="allCompleted" color="primary">check_box</mat-icon>
+      </button>
       <h5 class="title-btn" (click)="sortByTitle()">
         Title
         <mat-icon *ngIf="sorter['description']" class="rotate"
@@ -43,16 +76,16 @@
       </h5>
 
     </mat-toolbar>
-    <mat-list class="ts-list" cdkDropList (cdkDropListDropped)="dropTodo($event)" tsStopPropagation>
-      <mat-list-item class="list-item" cdkDrag matRipple
-                     *ngFor="let todo of todos | searchFilter: searchInput.value; let i = index"
+    <mat-list class="ts-list" cdkDropList (cdkDropListDropped)="dropTodo($event)" tsStopPropagation *ngIf="todos?.length">
+      <mat-list-item class="list-item" cdkDrag matRipple matRippleDisabled="true"
+                     *ngFor="let todo of todos | searchFilter: sessionService.searchInput | filterByStatus: activeFilter; let i = index;"
                      (dblclick)="editDescription(todo)"
-                     (click)="updateIfEditing(todo)"
-                     (contextmenu)="openContextMenu($event, todo, i)">
+                     (click)="todo.id !== editingTodo?.id && update()"
+                     (contextmenu)="openContextMenu($event, todo, i)" [class.editing]="todo.id === editingTodo?.id">
         <div class="drag-handle" cdkDragHandle fxHide.lt-sm>
           <mat-icon>drag_indicator</mat-icon>
         </div>
-        <mat-checkbox [checked]="todo.complete" (change)="toggleCompleted($event, todo)"
+        <mat-checkbox color="primary" [checked]="todo.complete" (change)="toggleCompleted($event, todo)"
                       tsStopPropagation></mat-checkbox>
         <div class="list-title">
           <span *ngIf="editingTodo?.id !== todo.id">{{ todo.description }}</span>
@@ -65,15 +98,17 @@
              matTooltipPosition="before" matTooltipClass="ninety-tooltip">
           {{ todo.createdAt | date : 'MMM d' }}
         </div>
-        <button class="delete-btn" mat-icon-button (click)="delete(todo, i)"  aria-label="Delete Todo"
+        <button class="delete-btn" mat-icon-button (click)="delete(todo, i)" aria-label="Delete Todo"
                 matTooltip="Delete Todo" matTooltipPosition="above" matTooltipClass="ts-tooltip">
           <mat-icon>close</mat-icon>
         </button>
       </mat-list-item>
     </mat-list>
-    <!--<mat-card-footer *ngIf="todos?.length">
+    <ts-alert *ngIf="todos && !todos.length">Oops...you have no todo's.  Todo's can be created using the input above.</ts-alert>
+    <!-- <mat-card-footer *ngIf="todos?.length">
       <mat-divider></mat-divider>
-      <mat-paginator [length]="todos.length"
+
+     <mat-paginator [length]="todos.length"
                      [pageSize]="pageSize"
                      [pageSizeOptions]="pageSizeOptions"
                      [showFirstLastButtons]="true"

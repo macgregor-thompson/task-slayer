@@ -1,0 +1,50 @@
+// File: _media-queries.scss
+$media-offset: 1px;
+$xs-width: 600px;
+$sm-width: 960px;
+$md-width: 1280px;
+$lg-width: 1920px;
+
+@mixin screen-lt($px) {
+  @media screen and (max-width: #{$px - $media-offset}) {
+    @content;
+  }
+}
+// bt=between
+@mixin screen-bt($px-min, $px-max) {
+  @media screen and (min-width: $px-min) and (max-width: #{$px-max - $media-offset}) {
+    @content;
+  }
+}
+@mixin screen-gt($px) {
+  @media screen and (min-width: $px) {
+    @content;
+  }
+}
+
+@mixin    xs { @include screen-bt(0,         $xs-width) { @content; }}
+@mixin gt-xs { @include screen-gt(           $xs-width) { @content; }}
+
+@mixin lt-sm { @include screen-lt($xs-width)            { @content; }}
+@mixin    sm { @include screen-bt($xs-width, $sm-width) { @content; }}
+@mixin gt-sm { @include screen-gt(           $sm-width) { @content; }}
+
+@mixin lt-md { @include screen-lt($sm-width)            { @content; }}
+@mixin    md { @include screen-bt($sm-width, $md-width) { @content; }}
+@mixin gt-md { @include screen-gt(           $md-width) { @content; }}
+
+@mixin lt-lg { @include screen-lt($md-width)            { @content; }}
+@mixin    lg { @include screen-bt($md-width, $lg-width) { @content; }}
+@mixin gt-lg { @include screen-gt(           $lg-width) { @content; }}
+
+@mixin retina {
+  @media
+  only screen and (-webkit-min-device-pixel-ratio: 2),
+  only screen and (min--moz-device-pixel-ratio: 2),
+  only screen and (-o-min-device-pixel-ratio: 2/1),
+  only screen and (min-device-pixel-ratio: 2),
+  only screen and (min-resolution: 192dpi),
+  only screen and (min-resolution: 2dppx) {
+    @content;
+  }
+}

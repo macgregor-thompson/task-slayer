@@ -11,8 +11,8 @@
       </ts-alert>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button color="accent" (click)="login()" [disabled]="!username?.length">LOGIN</button>
-      <button mat-raised-button color="primary" class="signup-btn" (click)="authService.signUp(username)"
+      <button mat-raised-button color="primary" (click)="login()" [disabled]="!username?.length">LOGIN</button>
+      <button mat-raised-button color="accent" class="signup-btn" (click)="authService.signUp(username)"
               [disabled]="!username?.length">SIGN UP
       </button>
     </mat-card-actions>

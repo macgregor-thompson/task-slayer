@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { filter, map, mergeMap } from 'rxjs/operators';
 
 @Injectable({
@@ -10,6 +10,9 @@ import { filter, map, mergeMap } from 'rxjs/operators';
 export class SessionService {
   private pageTitle: BehaviorSubject<string> = new BehaviorSubject('To-Do\'s');
   readonly pageTitle$: Observable<string> = this.pageTitle.asObservable();
+
+  refresh$ = new Subject();
+  searchInput = '';
 
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute) {

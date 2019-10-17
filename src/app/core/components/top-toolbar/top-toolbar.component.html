@@ -1,6 +1,18 @@
-<mat-toolbar color="accent">
+<mat-toolbar color="primary">
   Task Slayer
   <h1 class="page-title">{{sessionService.pageTitle$ | async}}</h1>
   <div class="fill-remaining-space"></div>
+  <button mat-icon-button (click)="sessionService.refresh$.next()" class="refresh-btn"
+          [matTooltip]="'Refresh '  + (sessionService.pageTitle$ | async)" matTooltipClass="ts-tooltip"
+          aria-label="Refresh" [disabled]="spinnerService.primary" fxHide.lt-sm>
+    <mat-icon>refresh</mat-icon>
+  </button>
+  <mat-form-field floatLabel="never" class="search-input" fxHide.lt-sm>
+    <input [(ngModel)]="sessionService.searchInput" matInput name="searchInput" [placeholder]="'Search ' + (sessionService.pageTitle$ | async)">
+    <button *ngIf="sessionService.searchInput.length" matSuffix mat-icon-button aria-label="Clear"
+            (click)="sessionService.searchInput = ''">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
   <ts-account-menu></ts-account-menu>
 </mat-toolbar>
