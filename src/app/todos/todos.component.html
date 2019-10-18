@@ -94,8 +94,7 @@
           </mat-form-field>
         </div>
 
-        <div class="list-date" [matTooltip]="todo.createdAt | date : 'mediumDate'"
-             matTooltipPosition="before" matTooltipClass="ninety-tooltip">
+        <div class="list-date">
           {{ todo.createdAt | date : 'MMM d' }}
         </div>
         <button class="delete-btn" mat-icon-button (click)="delete(todo, i)" aria-label="Delete Todo"
