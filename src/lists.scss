@@ -17,6 +17,8 @@
   background: white;
   font-size: 14px;
   align-items: center;
+  overflow: hidden;
+  position: relative;
 
   &:last-child {
     border: none;
@@ -27,8 +29,9 @@
   }
 
   &.editing, &:hover {
-    background-color: #dedede;
+    // background-color: #dedede;
   }
+
   &:hover {
     .drag-handle, .delete-btn {
       visibility: inherit;

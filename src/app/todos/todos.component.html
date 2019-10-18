@@ -77,7 +77,7 @@
 
     </mat-toolbar>
     <mat-list class="ts-list" cdkDropList (cdkDropListDropped)="dropTodo($event)" tsStopPropagation *ngIf="todos?.length">
-      <mat-list-item class="list-item" cdkDrag matRipple matRippleDisabled="true"
+      <mat-list-item class="list-item" cdkDrag
                      *ngFor="let todo of todos | searchFilter: sessionService.searchInput | filterByStatus: activeFilter; let i = index;"
                      (dblclick)="editDescription(todo)"
                      (click)="todo.id !== editingTodo?.id && update()"
@@ -105,16 +105,6 @@
       </mat-list-item>
     </mat-list>
     <ts-alert *ngIf="todos && !todos.length">Oops...you have no todo's.  Todo's can be created using the input above.</ts-alert>
-    <!-- <mat-card-footer *ngIf="todos?.length">
-      <mat-divider></mat-divider>
-
-     <mat-paginator [length]="todos.length"
-                     [pageSize]="pageSize"
-                     [pageSizeOptions]="pageSizeOptions"
-                     [showFirstLastButtons]="true"
-                     (page)="onPageEvent($event)">
-      </mat-paginator>
-    </mat-card-footer>-->
   </mat-card>
 </div>
 

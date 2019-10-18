@@ -90,17 +90,23 @@ mat-card-title {
 .filters {
   flex-wrap: wrap;
   @include flex-align-center();
-  padding: 0 16px;
-  @include lt-sm() {
-    mat-form-field {
-      margin-top: 15px;
+  padding: 10px 16px;
+
+  mat-form-field {
+    @media screen and (max-width: 620px) {
+      margin-top: 10px;
       width: 100%;
     }
   }
+
 }
 
 .remaining-todos {
   @include flex-align-center();
+  flex-wrap: wrap;
+  @include xs() {
+    justify-content: center;
+  }
 }
 
 .flex-align-right {
