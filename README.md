@@ -1,4 +1,4 @@
-# TaskSlayer (In Progress)
+# TaskSlayer
 
 Can be seen  [tslayer.com](https://tslayer.com).
 
