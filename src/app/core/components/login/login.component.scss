@@ -1,3 +1,4 @@
+@import '../../../../media-queries';
 
 .container {
   flex-direction: column;
@@ -16,8 +17,11 @@ h1 {
 }
 
 .login-card {
-  @media (min-width: 599px) {
-    width: 550px
+  @include gt-xs() {
+    width: 500px;
+  }
+  @include lt-sm() {
+    width: 80vw;
   }
 }
 
